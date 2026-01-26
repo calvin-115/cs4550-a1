@@ -1,5 +1,5 @@
-import KambazHome from "./kambaz/page";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-    return <KambazHome />;
+    redirect("/kambaz");
 }
