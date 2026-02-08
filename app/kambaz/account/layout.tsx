@@ -1,24 +1,21 @@
+import { ReactNode } from "react";
 import Link from "next/link";
 
-const linkStyle: React.CSSProperties = {
-    display: "block",
-    padding: "8px 10px",
-    borderRadius: 8,
-    textDecoration: "none",
-    color: "black",
-};
-
-export default function AccountLayout({ children }: { children: React.ReactNode }) {
+export default function AccountLayout({ children }: Readonly<{ children: ReactNode }>) {
     return (
-        <div style={{ display: "flex", gap: 18 }}>
-            <aside style={{ width: 200, borderRight: "1px solid #ddd", paddingRight: 12 }}>
-                <h3 style={{ marginTop: 0 }}>Account</h3>
-                <Link href="/kambaz/account/signin" style={linkStyle}>Signin</Link>
-                <Link href="/kambaz/account/signup" style={linkStyle}>Signup</Link>
-                <Link href="/kambaz/account/profile" style={linkStyle}>Profile</Link>
-            </aside>
-
-            <section style={{ flex: 1 }}>{children}</section>
+        <div id="wd-account-screen">
+            <div className="d-flex">
+                <div className="d-none d-md-block">
+                    <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
+                        <Link href="/kambaz/account/signin" className="list-group-item text-danger border-0">Signin</Link>
+                        <Link href="/kambaz/account/signup" className="list-group-item text-danger border-0">Signup</Link>
+                        <Link href="/kambaz/account/profile" className="list-group-item text-danger border-0">Profile</Link>
+                    </div>
+                </div>
+                <div className="flex-fill">
+                    {children}
+                </div>
+            </div>
         </div>
     );
 }

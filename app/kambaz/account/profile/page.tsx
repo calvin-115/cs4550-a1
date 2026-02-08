@@ -1,58 +1,25 @@
 import Link from "next/link";
+import { FormControl, FormSelect } from "react-bootstrap";
 
 export default function Profile() {
     return (
-        <div style={{ maxWidth: 640 }}>
+        <div id="wd-profile-screen">
             <h1>Profile</h1>
-
-            <div style={{ display: "grid", gap: 10 }}>
-                <label>
-                    Username:
-                    <input type="text" defaultValue="calvin" style={{ marginLeft: 8, width: "100%" }} />
-                </label>
-
-                <label>
-                    First Name:
-                    <input type="text" defaultValue="Calvin" style={{ marginLeft: 8, width: "100%" }} />
-                </label>
-
-                <label>
-                    Last Name:
-                    <input type="text" defaultValue="Liang" style={{ marginLeft: 8, width: "100%" }} />
-                </label>
-
-                <label>
-                    Password:
-                    <input type="password" defaultValue="password123" style={{ marginLeft: 8, width: "100%" }} />
-                </label>
-
-                <label>
-                    Date of Birth:
-                    <input type="date" defaultValue="2004-01-01" style={{ marginLeft: 8 }} />
-                </label>
-
-                <label>
-                    Email:
-                    <input type="email" defaultValue="calvin@example.com" style={{ marginLeft: 8, width: "100%" }} />
-                </label>
-
-                <label>
-                    Role:
-                    <select defaultValue="STUDENT" style={{ marginLeft: 8 }}>
-                        <option value="STUDENT">Student</option>
-                        <option value="TA">TA</option>
-                        <option value="FACULTY">Faculty</option>
-                        <option value="ADMIN">Admin</option>
-                    </select>
-                </label>
-
-                <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    {/* Signout goes back to signin */}
-                    <Link href="/kambaz/account/signin">Signout</Link>
-                    <span>|</span>
-                    <Link href="/kambaz/dashboard">Go to Dashboard</Link>
-                </div>
-            </div>
+            <FormControl defaultValue="alice" placeholder="username" className="wd-username mb-2" />
+            <FormControl defaultValue="123" placeholder="password" type="password" className="wd-password mb-2" />
+            <FormControl defaultValue="Alice" placeholder="First Name" id="wd-firstname" className="mb-2" />
+            <FormControl defaultValue="Wonderland" placeholder="Last Name" id="wd-lastname" className="mb-2" />
+            <FormControl defaultValue="2000-01-01" type="date" id="wd-dob" className="mb-2" />
+            <FormControl defaultValue="alice@wonderland.com" type="email" id="wd-email" className="mb-2" />
+            <FormSelect defaultValue="USER" id="wd-role" className="mb-2">
+                <option value="USER">User</option>
+                <option value="ADMIN">Admin</option>
+                <option value="FACULTY">Faculty</option>
+                <option value="STUDENT">Student</option>
+            </FormSelect>
+            <Link href="/kambaz/account/signin" className="btn btn-danger w-100">
+                Sign out
+            </Link>
         </div>
     );
 }
