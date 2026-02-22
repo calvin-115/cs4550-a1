@@ -1,35 +1,31 @@
+"use client";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { FormControl, FormSelect, FormCheck, Row, Col, Button } from "react-bootstrap";
+import { FormControl, FormSelect, FormCheck, Row, Col } from "react-bootstrap";
+import * as db from "../../../../database";
 
-export default async function AssignmentEditor({
-                                                   params,
-                                               }: {
-    params: Promise<{ courseId: string; assignmentsId: string }>;
-}) {
-    const { courseId, assignmentsId } = await params;
-
+export default function AssignmentEditor() {
+    const { courseId, assignmentsId } = useParams();
+    const assignment = db.assignments.find((a: any) => a._id === assignmentsId);
     return (
         <div id="wd-assignments-editor">
             <label htmlFor="wd-name" className="form-label">Assignment Name</label>
-            <FormControl id="wd-name" defaultValue="A1 - ENV + HTML" className="mb-3" />
-
+            <FormControl id="wd-name" defaultValue={assignment?.title || ""} className="mb-3" />
             <FormControl
                 as="textarea"
                 id="wd-description"
                 rows={6}
                 className="mb-3"
-                defaultValue="The assignment is available online. Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: Your full name and section. Links to each of the lab assignments. Link to the Kanbas application. Links to all relevant source code repositories. The Kanbas application should include a link to navigate back to the landing page."
+                defaultValue={assignment?.description || ""}
             />
-
             <Row className="mb-3">
                 <Col sm={4} className="text-end">
                     <label htmlFor="wd-points" className="form-label">Points</label>
                 </Col>
                 <Col sm={8}>
-                    <FormControl id="wd-points" type="number" defaultValue={100} />
+                    <FormControl id="wd-points" type="number" defaultValue={assignment?.points || 100} />
                 </Col>
             </Row>
-
             <Row className="mb-3">
                 <Col sm={4} className="text-end">
                     <label htmlFor="wd-group" className="form-label">Assignment Group</label>
@@ -43,7 +39,6 @@ export default async function AssignmentEditor({
                     </FormSelect>
                 </Col>
             </Row>
-
             <Row className="mb-3">
                 <Col sm={4} className="text-end">
                     <label htmlFor="wd-display-grade-as" className="form-label">Display Grade as</label>
@@ -56,7 +51,6 @@ export default async function AssignmentEditor({
                     </FormSelect>
                 </Col>
             </Row>
-
             <Row className="mb-3">
                 <Col sm={4} className="text-end">
                     <label htmlFor="wd-submission-type" className="form-label">Submission Type</label>
@@ -67,7 +61,6 @@ export default async function AssignmentEditor({
                         <option value="On Paper">On Paper</option>
                         <option value="No Submission">No Submission</option>
                     </FormSelect>
-
                     <div className="mt-3">
                         <label className="fw-bold mb-2">Online Entry Options</label>
                         <FormCheck type="checkbox" id="wd-text-entry" label="Text Entry" />
@@ -78,7 +71,6 @@ export default async function AssignmentEditor({
                     </div>
                 </Col>
             </Row>
-
             <Row className="mb-3">
                 <Col sm={4} className="text-end">
                     <label className="form-label">Assign</label>
@@ -86,23 +78,20 @@ export default async function AssignmentEditor({
                 <Col sm={8}>
                     <label htmlFor="wd-assign-to" className="fw-bold">Assign to</label>
                     <FormControl id="wd-assign-to" defaultValue="Everyone" className="mb-3" />
-
                     <label htmlFor="wd-due-date" className="fw-bold">Due</label>
-                    <FormControl id="wd-due-date" type="date" defaultValue="2024-05-13" className="mb-3" />
-
+                    <FormControl id="wd-due-date" type="date" defaultValue={assignment?.dueDate || "2024-05-13"} className="mb-3" />
                     <Row>
                         <Col>
                             <label htmlFor="wd-available-from" className="fw-bold">Available from</label>
-                            <FormControl id="wd-available-from" type="date" defaultValue="2024-05-06" />
+                            <FormControl id="wd-available-from" type="date" defaultValue={assignment?.availableFrom || "2024-05-06"} />
                         </Col>
                         <Col>
                             <label htmlFor="wd-available-until" className="fw-bold">Until</label>
-                            <FormControl id="wd-available-until" type="date" defaultValue="2024-05-20" />
+                            <FormControl id="wd-available-until" type="date" defaultValue={assignment?.availableUntil || "2024-05-20"} />
                         </Col>
                     </Row>
                 </Col>
             </Row>
-
             <hr />
             <div className="d-flex justify-content-end">
                 <Link href={`/kambaz/courses/${courseId}/assignments`} className="btn btn-secondary me-2">
