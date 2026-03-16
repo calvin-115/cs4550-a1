@@ -1,40 +1,36 @@
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
+"use client";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { MdDoNotDisturbAlt } from "react-icons/md";
+import { Button, Dropdown } from "react-bootstrap";
 import GreenCheckmark from "./GreenCheckmark";
+import ModuleEditor from "./ModuleEditor";
 
-export default function ModulesControls() {
+export default function ModulesControls(
+    { moduleName, setModuleName, addModule }:
+    { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }
+) {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     return (
         <div id="wd-modules-controls" className="text-nowrap">
-            <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+            <Button variant="danger" className="me-1 float-end" onClick={handleShow}>
                 <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
                 Module
             </Button>
-            <Dropdown className="float-end me-2">
-                <DropdownToggle variant="secondary" size="lg" id="wd-publish-all-btn">
+            <Dropdown className="float-end me-1">
+                <Dropdown.Toggle variant="secondary">
                     <GreenCheckmark /> Publish All
-                </DropdownToggle>
-                <DropdownMenu>
-                    <DropdownItem id="wd-publish-all">
-                        <GreenCheckmark /> Publish all modules and items
-                    </DropdownItem>
-                    <DropdownItem id="wd-publish-modules-only">
-                        <GreenCheckmark /> Publish modules only
-                    </DropdownItem>
-                    <DropdownItem id="wd-unpublish-all-modules-and-items">
-                        <MdDoNotDisturbAlt className="me-1 fs-5" /> Unpublish all modules and items
-                    </DropdownItem>
-                    <DropdownItem id="wd-unpublish-modules-only">
-                        <MdDoNotDisturbAlt className="me-1 fs-5" /> Unpublish modules only
-                    </DropdownItem>
-                </DropdownMenu>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item>Publish All</Dropdown.Item>
+                    <Dropdown.Item>Unpublish All</Dropdown.Item>
+                </Dropdown.Menu>
             </Dropdown>
-            <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-view-progress">
-                View Progress
-            </Button>
-            <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-collapse-all">
-                Collapse All
-            </Button>
+            <Button variant="secondary" className="me-1 float-end">View Progress</Button>
+            <Button variant="secondary" className="me-1 float-end">Collapse All</Button>
+            <ModuleEditor show={show} handleClose={handleClose} dialogTitle="Add Module"
+                          moduleName={moduleName} setModuleName={setModuleName} addModule={addModule} />
         </div>
     );
 }

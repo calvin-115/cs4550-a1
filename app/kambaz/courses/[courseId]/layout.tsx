@@ -1,29 +1,44 @@
-import { ReactNode } from "react";
-import { FaAlignJustify } from "react-icons/fa6";
-import { courses } from "../../database";
+"use client";
+import { ReactNode, useState } from "react";
 import CourseNavigation from "./Navigation";
+import { useSelector } from "react-redux";
+import { useParams } from "next/navigation";
+import { RootState } from "../../store";
+import { FaAlignJustify } from "react-icons/fa";
 import Breadcrumb from "./Breadcrumb";
 
-export default async function CourseLayout({
-                                               children,
-                                               params,
-                                           }: Readonly<{ children: ReactNode; params: Promise<{ courseId: string }> }>) {
-    const { courseId } = await params;
-    const course = courses.find((c) => c._id === courseId);
+interface Course {
+    _id: string;
+    name: string;
+    number: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+    image?: string;
+}
+
+export default function CoursesLayout({ children }: { children: ReactNode }) {
+    const { courseId } = useParams();
+    const { courses } = useSelector((state: RootState) => state.coursesReducer);
+    const course = courses.find((c: Course) => c._id === courseId);
+    const [showNav, setShowNav] = useState(true);
     return (
         <div id="wd-courses">
             <h2 className="text-danger">
-                <FaAlignJustify className="me-4 fs-4 mb-1" />
-                {course?.name} &gt; <Breadcrumb />
+                <FaAlignJustify className="me-4 fs-4 mb-1"
+                                onClick={() => setShowNav(!showNav)}
+                                style={{ cursor: "pointer" }} />
+                {course?.name}
+                <Breadcrumb />
             </h2>
             <hr />
             <div className="d-flex">
-                <div className="d-none d-md-block">
-                    <CourseNavigation courseId={courseId} />
-                </div>
-                <div className="flex-fill">
-                    {children}
-                </div>
+                {showNav && (
+                    <div className="d-none d-md-block">
+                        <CourseNavigation />
+                    </div>
+                )}
+                <div className="flex-fill">{children}</div>
             </div>
         </div>
     );
