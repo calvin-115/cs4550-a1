@@ -28,7 +28,13 @@ export default function TOC() {
                 <Link href="/kambaz" className="nav-link">Kambaz</Link>
             </li>
             <li className="nav-item">
-                <a id="wd-github" href="https://github.com/calvin-115/cs4550-a1" className="nav-link">My GitHub</a>
+                <a id="wd-github" href="https://github.com/calvin-115/cs4550-a1" className="nav-link">React GitHub</a>
+            </li>
+            <li className="nav-item">
+                <a href="https://github.com/calvin-115/kambaz-node-server-app" className="nav-link">Server GitHub</a>
+            </li>
+            <li className="nav-item">
+                <a href="https://kambaz-node-server-app-a5wr.onrender.com" className="nav-link">Server</a>
             </li>
         </ul>
     );
