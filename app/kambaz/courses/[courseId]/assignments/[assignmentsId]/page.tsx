@@ -1,10 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
-import { addAssignment, updateAssignment } from "../reducer";
+import { setAssignments } from "../reducer";
 import { FormControl, Button, Row, Col } from "react-bootstrap";
+import * as coursesClient from "../../../client";
 
 export default function AssignmentEditor() {
     const { courseId, assignmentsId } = useParams();
@@ -26,16 +28,28 @@ export default function AssignmentEditor() {
     });
 
     useEffect(() => {
+        const fetchAssignments = async () => {
+            if (assignments.length === 0) {
+                const fetched = await coursesClient.findAssignmentsForCourse(courseId as string);
+                dispatch(setAssignments(fetched));
+            }
+        };
+        fetchAssignments();
+    }, []);
+
+    useEffect(() => {
         if (existing) {
             setAssignment(existing);
         }
     }, [existing]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (isNew) {
-            dispatch(addAssignment(assignment));
+            const newAssignment = await coursesClient.createAssignmentForCourse(courseId as string, assignment);
+            dispatch(setAssignments([...assignments, newAssignment]));
         } else {
-            dispatch(updateAssignment(assignment));
+            await coursesClient.updateAssignment(assignment);
+            dispatch(setAssignments(assignments.map((a: any) => (a._id === assignment._id ? assignment : a))));
         }
         router.push(`/kambaz/courses/${courseId}/assignments`);
     };
